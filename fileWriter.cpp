@@ -5,6 +5,7 @@
 #include <fstream>
 #include <iostream>
 #include <ctime>
+#include <vector>
 
 using namespace std;
 
@@ -29,14 +30,13 @@ namespace fileWriter
 	// Saves content to the text file, using path
 	//
 	//
-	int writeFile(char* path, char* content)
+	int writeFile(char* path, string content)
 	{
 		ofstream file;
 		char fileName[BUFFER_SIZE];
 		sprintf(fileName, "%s/%s.txt", path, getCurrentDate());
 		file.open (fileName);
-		string str(content);
-		file << str;
+		file << content;
 		file.close();
 		return 0;
 	}
@@ -51,10 +51,16 @@ namespace fileWriter
 		return buffer;
 	}
 
+	// Returns domain from URI string
+	//
+	//
 	char* getHostNameFromUri(char* uri)
 	{
 		char* buffer = new char[BUFFER_SIZE];
-		strcpy(buffer, strstr(uri + HTTP_OFFSET, "/"));
+		memset(buffer, 0, BUFFER_SIZE);
+		string str(uri);
+		int length = str.find("/", HTTP_OFFSET);
+		memcpy(buffer, uri + HTTP_OFFSET, length - HTTP_OFFSET);
 		return buffer;
 	}
 }

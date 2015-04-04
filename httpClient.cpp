@@ -116,7 +116,8 @@ namespace httpClient
 			}
 		}
 		while ( bytesRead > 0 );
-		/* then call WSACleanup when done using the Winsock dll */
+
+		closesocket(s);
 		WSACleanup();
 	}
 }
