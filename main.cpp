@@ -1,5 +1,5 @@
 #define BUFFER_SIZE 5000000
-#define HTTP_OFFSET 8
+#define HTTP_OFFSET 7
 
 #include <iostream>
 #include "createDir.h"
@@ -20,7 +20,7 @@ int main()
 
 	memset(&content[0], 0, BUFFER_SIZE);
 	getContentByUri(hostName, uri, content);
-	createDirByPath(path);
+	createDirByPath(uri + HTTP_OFFSET);
 	writeFile(uri + HTTP_OFFSET, content);
 	cout << "Ok" << endl;
 	delete(content);
