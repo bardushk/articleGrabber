@@ -110,7 +110,6 @@ namespace httpClient
 		do
 		{
 			bytesRead = recv(s, content + offset, MAXBUF, 0);
-			cout << bytesRead << endl;
 			if ( bytesRead > 0 )
 			{
 				offset += bytesRead;
