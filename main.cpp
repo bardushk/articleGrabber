@@ -1,5 +1,4 @@
 #define BUFFER_SIZE 5000000
-#define HTTP_OFFSET 7
 
 #include <iostream>
 #include "createDir.h"
@@ -14,14 +13,14 @@ using namespace fileWriter;
 int main()
 {	
 	char* content = new char[BUFFER_SIZE];
-	char* const path = "FOO/Bar/klop";
 	char* const hostName = "snob.ru";
-	char* const uri = "http://snob.ru/magazine/entry/90524";
+	char* const uri = "http://snob.ru/selected/entry/90504";
+	char* path = getPathFromUri(uri);
 
 	memset(&content[0], 0, BUFFER_SIZE);
 	getContentByUri(hostName, uri, content);
-	createDirByPath(uri + HTTP_OFFSET);
-	writeFile(uri + HTTP_OFFSET, content);
+	createDirByPath(path);
+	writeFile(path, content);
 	cout << "Ok" << endl;
 	delete(content);
 	return 0;	

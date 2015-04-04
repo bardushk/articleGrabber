@@ -6,6 +6,8 @@
 namespace fileWriter
 {
 	int writeFile(char* path, char * content);
+	char* getPathFromUri(char* path);
+	char* getHostNameFromUri(char* uri);
 }
 
 #endif
