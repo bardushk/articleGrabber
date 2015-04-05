@@ -19,6 +19,7 @@ int main(int argc, char** argv)
 		cout << "Wrong number of arguments. " << endl;
 		return 1;
 	}
+
 	char* content = new char[BUFFER_SIZE];
 	char* const uri = argv[1];
 	char* path = getPathFromUri(uri);
@@ -26,12 +27,13 @@ int main(int argc, char** argv)
 
 	memset(&content[0], 0, BUFFER_SIZE);
 	getContentByUri(hostName, uri, content);
-	createDirByPath(path);
 	string str(content);
+	createDirByPath(path);
 	int start = 0;
-	writeFile(path, hrefFormat(getTag(str, "title", start) + string("\n\n") + htmlParser::getAllTags(str, "p")));
+	writeFile(path, splitIntoStrings(hrefFormat(getTag(str, "title", start) + string("\n\n") + getAllTags(str, "p"))));
 	cout << "Ok" << endl;
+
 	delete(content);
-	return 0;	
+	return 0;
 }
 

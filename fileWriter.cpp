@@ -31,13 +31,16 @@ namespace fileWriter
 	//
 	//
 	int writeFile(char* path, string content)
-	{
+	{		
+		setlocale(LC_ALL, "Russian");
 		ofstream file;
 		char fileName[BUFFER_SIZE];
 		sprintf(fileName, "%s/%s.txt", path, getCurrentDate());
+
 		file.open (fileName);
-		file << content;
+		file << content; 
 		file.close();
+
 		return 0;
 	}
 

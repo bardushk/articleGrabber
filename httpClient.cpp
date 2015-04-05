@@ -102,9 +102,7 @@ namespace httpClient
 
 		sprintf(buffer, "GET %s HTTP/1.0\r\n\r\n", uri);
 		send(s, buffer, strlen(buffer), 0);
-
-		setlocale(LC_ALL, "Russian");
-		int offset = 0;
+		size_t offset = 0;
 
 		bytesRead = 0;
 		do

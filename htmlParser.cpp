@@ -15,7 +15,7 @@ namespace htmlParser
 		if(start < 0) return "";
 		int end = html.find(tagClose, start);
 		if(end < 0) return "";
-		string result = html.substr(start, end - start + tagClose.length());
+		string result = html.substr(start + tagOpen.length(), end - start - tagOpen.length());
 		start = end;
 		return result;
 	}
@@ -25,11 +25,11 @@ namespace htmlParser
 	//
 	string getAllTags(string html, string tag)
 	{
-		string result = string("");
+		string result("");
 		int start = 0;
 		for(;;)
 		{
-			result = result + getTag(html, tag, start) + string("\n");
+			result = result + getTag(html, tag, start) + string("\n\n");
 			if(start < 0) break;
 		}
 		return result;
@@ -64,6 +64,35 @@ namespace htmlParser
 			result += "[" + html.substr(linkStart, linkEnd - linkStart) + "]";
 			currentPosition = messageEnd + string("</a>").length();
 		}	
+		return result;
+	}
+
+	// Split string by N chars 
+	// 
+	//
+	string splitIntoStrings(string text, int stringLength = 80)
+	{
+		string result("");
+		int spacePosition, stringStartPosition = 0, simbolCounter = 0;
+		for(int currentPosition = 0; currentPosition < text.length() - stringLength; currentPosition++)
+		{
+			if(text[currentPosition] == ' ')
+			{
+				spacePosition = currentPosition;
+			}
+			if((int)text[currentPosition] < 0)
+			{
+				currentPosition++;
+			}
+			simbolCounter++;
+			if(simbolCounter >= stringLength)
+			{
+				result += text.substr(stringStartPosition, spacePosition - stringStartPosition) + "\n";
+				stringStartPosition = spacePosition + 1;
+				simbolCounter = 0;
+			}
+		}
+		result += text.substr(stringStartPosition);
 		return result;
 	}
 }
