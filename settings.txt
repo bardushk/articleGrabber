@@ -1,0 +1,2 @@
+uri http://lenta.ru/news/2015/04/04/lavrov_crimea/
+lineLength 80

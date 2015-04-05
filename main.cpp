@@ -7,37 +7,39 @@
 #include "HtmlParser.h"
 #include "CreateDir.h"
 #include "HttpClient.h"
+#include "Settings.h"
 
 using namespace std;
 
 int main(int argc, char** argv)
 {	
-	if(argc != 2)
-	{
-		cout << "Wrong number of arguments. " << endl;
-		return 1;
-	}
-
 	FileHelper FileHelper;
 	CreateDir createDir;
 	HttpClient httpHelper;
-
-	char* content = new char[BUFFER_SIZE];
-	char* const uri = argv[1];
-	char* path = FileHelper.getPathFromUri(uri);
-	char* const hostName = FileHelper.getHostNameFromUri(uri);
-
+	Settings settings;
 	HtmlParser htmlParser;
 
+	char* content = new char[BUFFER_SIZE];
+
+	settings.toString();
+		
+	if(argc == 2) 
+	{
+		strcpy(settings.uri, argv[1]); 
+	}
+	char* path = FileHelper.getPathFromUri(settings.uri);
+	char* const hostName = FileHelper.getHostNameFromUri(settings.uri);
+
+
 	memset(&content[0], 0, BUFFER_SIZE);
-	httpHelper.getContentByUri(hostName, uri, content);
+	httpHelper.getContentByUri(hostName, settings.uri, content);
 	string str(content);
 	createDir.createDirByPath(path);
 	int start = 0;
-	FileHelper.writeFile(path, htmlParser.splitIntoStrings(htmlParser.hrefFormat(htmlParser.getTag(str, "title", start) + string("\n\n") + htmlParser.getAllTags(str, "p")), 80));
+	FileHelper.writeFile(path, htmlParser.splitIntoStrings(htmlParser.hrefFormat(htmlParser.getTag(str, "title", start) + string("\n\n") + htmlParser.getAllTags(str, "p")), settings.lineLenght));
 	cout << "Ok" << endl;
 
 	delete(content);
-	return 0;
+	return 0;	
 }
 
