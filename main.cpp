@@ -30,7 +30,7 @@ int main(int argc, char** argv)
 	string str(content);
 	createDirByPath(path);
 	int start = 0;
-	writeFile(path, splitIntoStrings(hrefFormat(getTag(str, "title", start) + string("\n\n") + getAllTags(str, "p"))));
+	writeFile(path, splitIntoStrings(hrefFormat(getTag(str, "title", start) + string("\n\n") + getAllTags(str, "p")), 80));
 	cout << "Ok" << endl;
 
 	delete(content);

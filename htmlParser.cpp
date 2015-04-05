@@ -61,7 +61,7 @@ namespace htmlParser
 			messageStart = html.find(">", linkEnd) + 1;
 			messageEnd = html.find("</a>", messageStart);
 			result += html.substr(messageStart, messageEnd - messageStart);
-			result += "[" + html.substr(linkStart, linkEnd - linkStart) + "]";
+			result += "[" + html.substr(linkStart, linkEnd - linkStart + 1) + "]";
 			currentPosition = messageEnd + string("</a>").length();
 		}	
 		return result;
@@ -73,22 +73,33 @@ namespace htmlParser
 	string splitIntoStrings(string text, int stringLength = 80)
 	{
 		string result("");
+				setlocale(LC_ALL, "Russian");
 		int spacePosition, stringStartPosition = 0, simbolCounter = 0;
-		for(int currentPosition = 0; currentPosition < text.length() - stringLength; currentPosition++)
+		for(int currentPosition = 0; currentPosition < text.length(); currentPosition++)
 		{
 			if(text[currentPosition] == ' ')
 			{
 				spacePosition = currentPosition;
 			}
-			if((int)text[currentPosition] < 0)
+
+			if(text[currentPosition] == '\n')
 			{
-				currentPosition++;
+				simbolCounter = 0;
+				result += text.substr(stringStartPosition, currentPosition - stringStartPosition + 1);
+				stringStartPosition = currentPosition + 1;
+				continue;
+			}
+			if(text[currentPosition] < 0)
+			{
+				currentPosition++;		
 			}
 			simbolCounter++;
+			
 			if(simbolCounter >= stringLength)
 			{
-				result += text.substr(stringStartPosition, spacePosition - stringStartPosition) + "\n";
-				stringStartPosition = spacePosition + 1;
+				result += text.substr(stringStartPosition, spacePosition + 1  - stringStartPosition) + "\n";
+				currentPosition = spacePosition;
+				stringStartPosition = currentPosition + 1;
 				simbolCounter = 0;
 			}
 		}
