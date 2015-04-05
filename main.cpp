@@ -28,7 +28,8 @@ int main(int argc, char** argv)
 	getContentByUri(hostName, uri, content);
 	createDirByPath(path);
 	string str(content);
-	writeFile(path, getTitle(str));
+	int start = 0;
+	writeFile(path, hrefFormat(getTag(str, "title", start) + string("\n\n") + htmlParser::getAllTags(str, "p")));
 	cout << "Ok" << endl;
 	delete(content);
 	return 0;	
