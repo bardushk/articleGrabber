@@ -3,14 +3,12 @@
 #include <iostream>
 #include "createDir.h"
 #include "httpClient.h"
-#include "fileWriter.h"
-#include "htmlParser.h"
+#include "FileHelper.h"
+#include "HtmlParser.h"
+#include "CreateDir.h"
+#include "HttpClient.h"
 
 using namespace std;
-using namespace httpClient;
-using namespace createDir;
-using namespace fileWriter;
-using namespace htmlParser;
 
 int main(int argc, char** argv)
 {	
@@ -20,17 +18,23 @@ int main(int argc, char** argv)
 		return 1;
 	}
 
+	FileHelper FileHelper;
+	CreateDir createDir;
+	HttpClient httpHelper;
+
 	char* content = new char[BUFFER_SIZE];
 	char* const uri = argv[1];
-	char* path = getPathFromUri(uri);
-	char* const hostName = getHostNameFromUri(uri);
+	char* path = FileHelper.getPathFromUri(uri);
+	char* const hostName = FileHelper.getHostNameFromUri(uri);
+
+	HtmlParser htmlParser;
 
 	memset(&content[0], 0, BUFFER_SIZE);
-	getContentByUri(hostName, uri, content);
+	httpHelper.getContentByUri(hostName, uri, content);
 	string str(content);
-	createDirByPath(path);
+	createDir.createDirByPath(path);
 	int start = 0;
-	writeFile(path, splitIntoStrings(hrefFormat(getTag(str, "title", start) + string("\n\n") + getAllTags(str, "p")), 80));
+	FileHelper.writeFile(path, htmlParser.splitIntoStrings(htmlParser.hrefFormat(htmlParser.getTag(str, "title", start) + string("\n\n") + htmlParser.getAllTags(str, "p")), 80));
 	cout << "Ok" << endl;
 
 	delete(content);

@@ -2,18 +2,15 @@
 #include <iostream>
 #include <windows.h>
 #include <string>
+#include "CreateDir.h"
 
 using namespace std;
-
-
-namespace createDir
-{
 
 	//
 	// Get next dirName from path string
 	// start current simbol position for sear
 	// 
-	int getNextDir(const string& path, string &dirName, int start)
+int CreateDir::_getNextDir(const string& path, string &dirName, int start)
 	{
 		int position = 0, length = 0;
 		position = path.find("/", start);
@@ -29,7 +26,7 @@ namespace createDir
 
 	// Check if the directory exists
 	//
-	bool dirExists(const string& dirName_in)
+	bool CreateDir::_dirExists(const string& dirName_in)
 	{
 		DWORD ftyp = GetFileAttributesA(dirName_in.c_str());
 		if (ftyp == INVALID_FILE_ATTRIBUTES)
@@ -41,7 +38,7 @@ namespace createDir
 		return false;    // this is not a directory!
 	}
 
-	wstring s2ws(const string& s)
+	wstring CreateDir::_s2ws(const string& s)
 	{
 		int len;
 		int slength = (int)s.length() + 1;
@@ -56,16 +53,16 @@ namespace createDir
 	// Creates directories if they not exists by path string
 	// Starts with current directory
 	//
-	int createDirByPath(const string path)
+	int CreateDir::createDirByPath(const string path)
 	{
 		int start = 0;
 		string dirName;
 		for(;;)
 		{
-			start = getNextDir(path, dirName, start);
-			if(!dirExists(dirName))
+			start = CreateDir::_getNextDir(path, dirName, start);
+			if(!CreateDir::_dirExists(dirName))
 			{
-				if(!CreateDirectory(s2ws(dirName).c_str(), NULL))
+				if(!CreateDirectory(CreateDir::_s2ws(dirName).c_str(), NULL))
 				{
 					cout << "Error " << GetLastError() << endl;
 					return 1;
@@ -75,4 +72,3 @@ namespace createDir
 		}
 		return 0;
 	}
-}
